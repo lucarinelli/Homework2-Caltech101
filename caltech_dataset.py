@@ -32,9 +32,9 @@ class Caltech(VisionDataset):
         
         datadir = "Homework2-Caltech101/101_ObjectCategories"
         
-        if self.split = 'train':
+        if self.split == 'train':
             filepath = datadir+'/'+'train.txt'
-        elif self.split = 'test':
+        elif self.split == 'test':
             filepath = datadir+'/'+'test.txt'
 
         if not os.path.isfile(filepath):
