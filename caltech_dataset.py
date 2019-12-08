@@ -15,6 +15,9 @@ def pil_loader(path):
 
 
 class Caltech(VisionDataset):
+    
+    dataset = []
+    
     def __init__(self, root, split='train', transform=None, target_transform=None):
         super(Caltech, self).__init__(root, transform=transform, target_transform=target_transform)
 
@@ -39,9 +42,10 @@ class Caltech(VisionDataset):
             print("File path {} does not exist. Error!!!".format(filepath))
             return
   
-        self.dataset = []
+        
         prev_target_name = None
         target_number = 0
+        self.dataset = []
         
         with open(filepath) as fp:
             for line in fp:
