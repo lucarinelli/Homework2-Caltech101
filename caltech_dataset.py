@@ -62,7 +62,7 @@ class Caltech(VisionDataset):
                     prev_target_name = target_name
                     target_number = target_number + 1
                 
-                self.dataset.append(pil_loader(root+'/'+datadir+'/'+line.rstrip()), target_number)
+                self.dataset.append((pil_loader(root+'/'+datadir+'/'+line.rstrip()), target_number))
 
     def __getitem__(self, index):
         '''
