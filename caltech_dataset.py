@@ -30,12 +30,10 @@ class Caltech(VisionDataset):
         - Labels should start from 0, so for Caltech you will have lables 0...100 (excluding the background class) 
         '''
         
-        datadir = "Homework2-Caltech101/101_ObjectCategories"
-        
         if self.split == 'train':
-            filepath = datadir+'/'+'train.txt'
+            filepath = root+'/'+'train.txt'
         elif self.split == 'test':
-            filepath = datadir+'/'+'test.txt'
+            filepath = root+'/'+'test.txt'
 
         if not os.path.isfile(filepath):
             print("File path {} does not exist. Error!!!".format(filepath))
@@ -58,7 +56,7 @@ class Caltech(VisionDataset):
                     prev_target_name = target_name
                     target_number = target_number + 1
                 
-                self.dataset.append(pil_loader(datadir+'/'+line), target_number)
+                self.dataset.append(pil_loader(root+'/'+line), target_number)
 
     def __getitem__(self, index):
         '''
