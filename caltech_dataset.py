@@ -47,6 +47,8 @@ class Caltech(VisionDataset):
         target_number = 0
         self.dataset = []
         
+        datadir = '101_ObjectCategories'
+        
         with open(filepath) as fp:
             for line in fp:
                 target_name = line.split('/')[0]
@@ -60,7 +62,7 @@ class Caltech(VisionDataset):
                     prev_target_name = target_name
                     target_number = target_number + 1
                 
-                self.dataset.append(pil_loader(root+'/'+line), target_number)
+                self.dataset.append(pil_loader(root+'/'+datadir+'/'+line), target_number)
 
     def __getitem__(self, index):
         '''
