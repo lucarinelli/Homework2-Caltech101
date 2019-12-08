@@ -29,6 +29,36 @@ class Caltech(VisionDataset):
           through the index
         - Labels should start from 0, so for Caltech you will have lables 0...100 (excluding the background class) 
         '''
+        
+        datadir = "Homework2-Caltech101/101_ObjectCategories"
+        
+        if self.split = 'train':
+            filepath = datadir+'/'+'train.txt'
+        elif self.split = 'test':
+            filepath = datadir+'/'+'test.txt'
+
+        if not os.path.isfile(filepath):
+            print("File path {} does not exist. Error!!!".format(filepath))
+            return
+  
+        self.dataset = []
+        prev_target_name = None
+        target_number = 0
+        
+        with open(filepath) as fp:
+            for line in fp:
+                target_name = line.split('/')[0]
+                
+                if target_name == 'BACKGROUND_Google':
+                    continue
+                
+                if prev_target_name is None:
+                    prev_target_name = target_name
+                elif prev_target_name != target_name:
+                    prev_target_name = target_name
+                    target_number = target_number + 1
+                
+                self.dataset.append(pil_loader(datadir+'/'+line), target_number)
 
     def __getitem__(self, index):
         '''
@@ -40,7 +70,7 @@ class Caltech(VisionDataset):
             tuple: (sample, target) where target is class_index of the target class.
         '''
 
-        image, label = ... # Provide a way to access image and label via index
+        image, label = self.dataset[index] # Provide a way to access image and label via index
                            # Image should be a PIL Image
                            # label can be int
 
@@ -55,5 +85,5 @@ class Caltech(VisionDataset):
         The __len__ method returns the length of the dataset
         It is mandatory, as this is used by several other components
         '''
-        length = ... # Provide a way to get the length (number of elements) of the dataset
+        length = len(self.dataset) # Provide a way to get the length (number of elements) of the dataset
         return length
