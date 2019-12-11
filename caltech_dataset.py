@@ -63,6 +63,8 @@ class Caltech(VisionDataset):
                     target_number = target_number + 1
                 
                 self.dataset.append((pil_loader(root+'/'+datadir+'/'+line.rstrip()), target_number))
+                
+        print("Last target number assigned: {}".format(target_number))
 
     def __getitem__(self, index):
         '''
