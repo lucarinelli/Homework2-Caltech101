@@ -18,7 +18,7 @@ class Caltech(VisionDataset):
     
     dataset = []
     
-    def __init__(self, root=None, split='train', transform=None, target_transform=None, data=None):
+    def __init__(self, root=None, split='train', transform=None, target_transform=None data=None):
         super(Caltech, self).__init__(root, transform=transform, target_transform=target_transform)
 
         self.split = split # This defines the split you are going to use
@@ -26,7 +26,6 @@ class Caltech(VisionDataset):
             
         if data is not None:
             self.dataset = data
-            self.transform = transform
         else:
             '''
             - Here you should implement the logic for reading the splits files and accessing elements
@@ -81,13 +80,10 @@ class Caltech(VisionDataset):
         image, label = self.dataset[index] # Provide a way to access image and label via index
                            # Image should be a PIL Image
                            # label can be int
-
-        if self.split == 'train' and self.transform is not None:
-            image = self.transform(image)
                 
         # Applies preprocessing when accessing the image
-        if self.target_transform is not None:
-            image = self.target_transform(image)
+        if self.transform is not None:
+            image = self.transform(image)
 
         return image, label
 
