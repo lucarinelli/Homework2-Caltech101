@@ -5,7 +5,6 @@ from PIL import Image
 import os
 import os.path
 import sys
-import random
 
 
 def pil_loader(path):
@@ -19,15 +18,11 @@ class Caltech(VisionDataset):
     
     dataset = []
     
-    def __init__(self, root=None, split='train', transform=None, target_transform=None, data=None, augment = 0, rseed=None):
+    def __init__(self, root=None, split='train', transform=None, target_transform=None, data=None):
         super(Caltech, self).__init__(root, transform=transform, target_transform=target_transform)
 
         self.split = split # This defines the split you are going to use
                            # (split files are called 'train.txt' and 'test.txt')
-
-        self.augment = augment
-        if self.augment > 0:
-            random.seed(rseed)
             
         if data is not None:
             self.dataset = data
@@ -87,9 +82,8 @@ class Caltech(VisionDataset):
                            # Image should be a PIL Image
                            # label can be int
 
-        if self.augment > 0 and self.transform is not None:
-            if random.random() < self.augment:
-                image = self.transform(image)
+        if self.split == 'train' and self.transform is not None:
+            image = self.transform(image)
                 
         # Applies preprocessing when accessing the image
         if self.target_transform is not None:
