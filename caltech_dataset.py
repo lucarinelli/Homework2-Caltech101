@@ -90,8 +90,8 @@ class Caltech(VisionDataset):
                            # Image should be a PIL Image
                            # label can be int
 
-        if augment > 0 and self.transform is not None:
-            if random.random() < augment:
+        if self.augment > 0 and self.transform is not None:
+            if random.random() < self.augment:
                 image = self.transform(image)
                 
         # Applies preprocessing when accessing the image
