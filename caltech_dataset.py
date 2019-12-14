@@ -25,56 +25,53 @@ class Caltech(VisionDataset):
         self.split = split # This defines the split you are going to use
                            # (split files are called 'train.txt' and 'test.txt')
 
-        if data is not None:
-            self.dataset = data
-            self.transform = transform
-            return
-        
         self.augment = augment
         if self.augment > 0:
             random.seed(rseed)
             
-        '''
-        - Here you should implement the logic for reading the splits files and accessing elements
-        - If the RAM size allows it, it is faster to store all data in memory
-        - PyTorch Dataset classes use indexes to read elements
-        - You should provide a way for the __getitem__ method to access the image-label pair
-          through the index
-        - Labels should start from 0, so for Caltech you will have lables 0...100 (excluding the background class) 
-        '''
-        
-        if self.split == 'train':
-            filepath = root+'/'+'train.txt'
-        elif self.split == 'test':
-            filepath = root+'/'+'test.txt'
+        if data is not None:
+            self.dataset = data
+            self.transform = transform
+        else:
+            '''
+            - Here you should implement the logic for reading the splits files and accessing elements
+            - If the RAM size allows it, it is faster to store all data in memory
+            - PyTorch Dataset classes use indexes to read elements
+            - You should provide a way for the __getitem__ method to access the image-label pair
+              through the index
+            - Labels should start from 0, so for Caltech you will have lables 0...100 (excluding the background class) 
+            '''
+            if self.split == 'train':
+                filepath = root+'/'+'train.txt'
+            elif self.split == 'test':
+                filepath = root+'/'+'test.txt'
 
-        if not os.path.isfile(filepath):
-            print("File path {} does not exist. Error!!!".format(filepath))
-            return
-  
-        
-        prev_target_name = None
-        target_number = 0
-        self.dataset = []
-        
-        datadir = '101_ObjectCategories'
-        
-        with open(filepath) as fp:
-            for line in fp:
-                target_name = line.split('/')[0]
-                
-                if target_name == 'BACKGROUND_Google':
-                    continue
-                
-                if prev_target_name is None:
-                    prev_target_name = target_name
-                elif prev_target_name != target_name:
-                    prev_target_name = target_name
-                    target_number = target_number + 1
-                
-                self.dataset.append((pil_loader(root+'/'+datadir+'/'+line.rstrip()), target_number))
-                
-        print("Last target number assigned: {}".format(target_number))
+            if not os.path.isfile(filepath):
+                print("File path {} does not exist. Error!!!".format(filepath))
+                return
+
+            prev_target_name = None
+            target_number = 0
+            self.dataset = []
+
+            datadir = '101_ObjectCategories'
+
+            with open(filepath) as fp:
+                for line in fp:
+                    target_name = line.split('/')[0]
+
+                    if target_name == 'BACKGROUND_Google':
+                        continue
+
+                    if prev_target_name is None:
+                        prev_target_name = target_name
+                    elif prev_target_name != target_name:
+                        prev_target_name = target_name
+                        target_number = target_number + 1
+
+                    self.dataset.append((pil_loader(root+'/'+datadir+'/'+line.rstrip()), target_number))
+
+            print("Last target number assigned: {}".format(target_number))
 
     def __getitem__(self, index):
         '''
